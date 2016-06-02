@@ -40,6 +40,7 @@ public class Atm {
 			//退出系统
 			exit();
 			default:
+				System.err.println("请输入正确的选项!");
 				start();
 			
 		}
@@ -50,7 +51,10 @@ public class Atm {
 	 */
 	private void exit() {
 		// TODO 操作完成退出系统
-		
+		System.out.println("*******************");
+		System.out.println("    感谢您的使用！");
+		System.out.println("*******************");
+		System.exit(0);
 	}
 
 	/**
@@ -58,7 +62,8 @@ public class Atm {
 	 */
 	private void systemManagerMenu() {
 		// TODO 显示系统管理菜单
-		
+		System.out.println("系统管理菜单~~~~~");
+		start();
 	}
 
 	/**
@@ -66,7 +71,8 @@ public class Atm {
 	 */
 	private void insertCardMenu() {
 		// TODO 显示插卡菜单
-		
+		System.out.println("插卡菜单~~");
+		start();
 	}
 	
 	/**
@@ -74,7 +80,8 @@ public class Atm {
 	 */
 	private void openAccountMenu() {
 		// TODO 显示开户菜单
-		
+		System.out.println("开户菜单~~");
+		start();
 	}
 
 	
