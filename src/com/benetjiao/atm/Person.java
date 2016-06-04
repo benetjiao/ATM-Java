@@ -6,7 +6,7 @@ public class Person {
 	private String pwd;
 	
 	private float money;
-	private boolean isEnable;
+	private boolean isBlock;
 	
 	public String getName() {
 		return name;
@@ -26,11 +26,11 @@ public class Person {
 	public void setMoney(float money) {
 		this.money = money;
 	}
-	public boolean isEnable() {
-		return isEnable;
+	public boolean isBlock() {
+		return isBlock;
 	}
-	public void setEnable(boolean isEnable) {
-		this.isEnable = isEnable;
+	public void setBlock(boolean isEnable) {
+		this.isBlock = isEnable;
 	}
 	
 	

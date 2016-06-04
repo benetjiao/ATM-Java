@@ -34,7 +34,7 @@ public class Atm {
 			break;
 		case "3":
 			//进入系统管理菜单
-			systemManagerMenu();
+			systemManagerAdmin();
 			break;
 		case "4":
 			//退出系统
@@ -60,10 +60,145 @@ public class Atm {
 	/**
 	 * 系统管理菜单
 	 */
-	private void systemManagerMenu() {
+	private void systemManagerAdmin() {
 		// TODO 显示系统管理菜单
-		System.out.println("系统管理菜单~~~~~");
-		start();
+		System.out.println("请输入管理员密码：");
+		String admin = input.next();
+		
+		if("admin".equals(admin)){
+			systemManagerMenu();
+		} else {
+			System.out.println("密码错误！");
+			start();
+		}
+	}
+
+	/**
+	 * 系统管理菜单
+	 */
+	private void systemManagerMenu() {
+		// TODO Auto-generated method stub
+		System.out.println("*************************");
+		System.out.println("   ATM 后台管理系统");
+		System.out.println("*************************");
+		System.out.println("  1.显示所有用户");
+		System.out.println("  2.冻结账户");
+		System.out.println("  3.恢复账户");
+		System.out.println("  4.退出");
+		System.out.println("*************************");
+		System.out.println("请选择您要进行的操作：");
+		
+		String num = input.next();
+		switch(num){
+		case "1":
+			displayAllUsers();
+			break;
+		case "2":
+			blockUser();
+			break;
+		case "3":
+			unBlockUser();
+			break;
+		case "4":
+			start();
+			break;
+			default:
+				systemManagerMenu();
+		}
+		
+	}
+
+	/**
+	 * 恢复账户
+	 */
+	private void unBlockUser() {
+		// TODO 恢复冻结的账户
+		Person[] ps = bank.getAllUsers();
+		// j 用来显示序号
+		int j = 1;
+		System.out.println("-------------------------");
+		System.out.printf("%2s + %8s + %8s%n","序号","用户名","是否冻结");
+		System.out.println("-------------------------");
+		for(int i = 0; i < ps.length; i++){
+			if(ps[i] != null && ps[i].isBlock() == true){
+				System.out.printf("%2s + %8s + %8s%n", j,ps[i].getName(),ps[i].isBlock());
+				j++;
+				System.out.println("-------------------------");
+			}
+		}
+		System.out.println("请输入您要解冻的用户名：");
+		String blockName = input.next();
+		
+		Person p = bank.vaildatePerson(blockName);
+		if(p != null){
+			if(p.isBlock() == true){
+				p.setBlock(false);
+				System.out.println("解冻成功！");
+				systemManagerMenu();
+			} else {
+				System.out.println("该用户未被冻结！");
+			}
+		} else {
+			System.out.println("该用不存在！");
+			systemManagerMenu();
+		}
+	}
+
+	/**
+	 * 冻结账户
+	 */
+	private void blockUser() {
+		// TODO 冻结账户
+		Person[] ps = bank.getAllUsers();
+		// j 用来显示序号
+		int j = 1;
+		System.out.println("-------------------------");
+		System.out.printf("%2s + %8s + %8s%n","序号","用户名","是否冻结");
+		System.out.println("-------------------------");
+		for(int i = 0; i < ps.length; i++){
+			if(ps[i] != null && ps[i].isBlock() == false){
+				System.out.printf("%2s + %8s + %8s%n", j,ps[i].getName(),ps[i].isBlock());
+				j++;
+				System.out.println("-------------------------");
+			}
+		}
+		System.out.println("请输入您要冻结的用户名：");
+		String blockName = input.next();
+		
+		Person p = bank.vaildatePerson(blockName);
+		if(p != null){
+			if(p.isBlock() == false){
+				p.setBlock(true);
+				System.out.println("冻结成功！");
+				systemManagerMenu();
+			} else {
+				System.out.println("该用户已被冻结！");
+			}
+		} else {
+			System.out.println("该用不存在！");
+			systemManagerMenu();
+		}
+	}
+
+	/**
+	 * 显示所有用户
+	 */
+	private void displayAllUsers() {
+		// TODO 显示所有用户
+		Person[] ps = bank.getAllUsers();
+		// j 用来显示序号
+		int j = 1;
+		System.out.println("-------------------------");
+		System.out.printf("%2s + %8s + %8s%n","序号","用户名","是否冻结");
+		System.out.println("-------------------------");
+		for(int i = 0; i < ps.length; i++){
+			if(ps[i] != null){
+				System.out.printf("%2s + %8s + %8s%n", j,ps[i].getName(),ps[i].isBlock());
+				j++;
+				System.out.println("-------------------------");
+			}
+		}
+		systemManagerMenu();
 	}
 
 	/**
@@ -79,7 +214,12 @@ public class Atm {
 			
 			Person p = bank.vaildatePerson(name,pwd);
 			if(p != null){
-				accountMenu(p);
+				if(p.isBlock() == false){
+					accountMenu(p);
+				} else {
+					System.out.println("您的账户已被冻结！");
+					start();
+				}
 			} else {
 				System.out.println("用户名或密码不正确！");
 				insertCardMenu();
@@ -217,7 +357,7 @@ public class Atm {
 				Person transPer = bank.vaildatePerson(transPerName);
 				
 				if(transPer != null){
-					if(transPer.isEnable()){
+					if(transPer.isBlock() == false){
 						System.out.println("请输入要转账的金额：");
 						float money = input.nextFloat();
 						
@@ -313,9 +453,10 @@ public class Atm {
 							
 							if(money >= 0){
 								Person per = new Person();
-								per.setEnable(true);
+								per.setBlock(false);
 								per.setName(name);
 								per.setPwd(pwd2);
+								per.setMoney(money);
 								
 								boolean isSaved = bank.savePerson(per);
 								if(isSaved){

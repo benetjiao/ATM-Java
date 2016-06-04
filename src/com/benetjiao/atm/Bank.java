@@ -36,11 +36,20 @@ public class Bank {
 	public Person vaildatePerson(String name, String pwd) {
 		// TODO 验证用户登录
 		for(int i = 0; i < ps.length; i++){
-			if(name.equals(ps[i].getName()) && pwd.equals(ps[i].getPwd())){
+			if(ps[i] != null && name.equals(ps[i].getName()) && pwd.equals(ps[i].getPwd())){
 				return ps[i];
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * 获取所有用户
+	 * @return 所有用户
+	 */
+	public Person[] getAllUsers() {
+		// TODO 返回所有用户
+		return ps;
 	}
 	
 
