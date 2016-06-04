@@ -137,6 +137,7 @@ public class Atm {
 				systemManagerMenu();
 			} else {
 				System.out.println("该用户未被冻结！");
+				systemManagerMenu();
 			}
 		} else {
 			System.out.println("该用不存在！");
@@ -170,14 +171,13 @@ public class Atm {
 			if(p.isBlock() == false){
 				p.setBlock(true);
 				System.out.println("冻结成功！");
-				systemManagerMenu();
 			} else {
 				System.out.println("该用户已被冻结！");
 			}
 		} else {
 			System.out.println("该用不存在！");
-			systemManagerMenu();
 		}
+		systemManagerMenu();
 	}
 
 	/**
